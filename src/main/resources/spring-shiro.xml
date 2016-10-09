@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	                       http://www.springframework.org/schema/aop 
+						   http://www.springframework.org/schema/aop/spring-aop.xsd
+						   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+	                       
+	default-lazy-init="true">
+
+	<description>Shiro安全配置</description>
+	
+	
+	   
+    <!-- 配置自定义Realm -->
+    <bean id="myRealm" class="com.xu.manager.shiro.MyRealm"/>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+    </bean>
+
+    <!-- Shiro过滤器 核心-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 身份认证失败，则跳转到登录页面的配置 -->
+        <property name="loginUrl" value="/login.jsp"/>
+        <!-- 权限认证失败，则跳转到指定页面 -->
+        <property name="unauthorizedUrl" value="/login.jsp"/>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <property name="filterChainDefinitions">
+            <value>
+                <!--anon 表示匿名访问，不需要认证以及授权-->
+               
+                  /login=authc
+                  /admin=authc
+                 
+                  
+                
+               <!-- authc表示需要认证 没有进行身份认证是不能进行访问的
+                /admin*=authc
+                 /admin=anon -->
+
+            </value>
+        </property>
+    </bean>
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 开启Shiro注解 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+		<!-- 自定义对 shiro的连接约束,结合shiroSecurityFilter实现动态获取资源,  默认的连接配置 -->
+	
+
+	<bean id="chainDefinitionSectionMetaSource" class="com.xu.manager.shiro.ChainDefinitionSectionMetaSource">
+	       
+	    <property name="filterChainDefinitions">
+	        <value>
+	       
+	         <!--    /login.do = authc 
+	            /favicon.ico = anon
+	            /logout.do = logout
+	            /images/** = anon
+	            /css/** = anon
+	            /common/js/jquery-1.10.2.min.js = anon
+	            
+	            
+	            /selectOption.do = roles[index]
+	            /index.jsp = perms[index:index]
+	            
+	            /** = authc  
+	            authc必须是验证过的,不能是"remember me",
+	            	而user可以是"remember me",只要Subject包含principal就行。
+				
+	            
+	            
+	            anon:  例子/admins/**=anon 没有参数，表示可以匿名使用。
+	            authc: 例如/admins/user/**=authc表示需要认证(登录)才能使用，没有参数
+	            authcBasic：例如/admins/user/**=authcBasic没有参数表示httpBasic认证
+	            user:例如/admins/user/**=user没有参数表示必须存在用户，当登入操作时不做检查
+	            
+	            roles：例子/admins/user/**=roles[admin],参数可以写多个，多个时必须加上引号，并且参数之间用逗号分割，当有多个参数时，例如admins/user/**=roles["admin,guest"],每个参数通过才算通过，相当于hasAllRoles()方法。
+	            perms：例子/admins/user/**=perms[user:add:*],参数可以写多个，多个时必须加上引号，并且参数之间用逗号分割，例如/admins/user/**=perms["user:add:*,user:modify:*"]，当有多个参数时必须每个参数都通过才通过，想当于isPermitedAll()方法。
+	            rest：  例子/admins/user/**=rest[user],根据请求的方法，相当于/admins/user/**=perms[user:method] ,其中method为post，get，delete等。
+				ssl:例子/admins/user/**=ssl没有参数，表示安全的url请求，协议为https
+				port：  例子/admins/user/**=port[8081],当请求的url的端口不是8081是跳转到schemal://serverName:8081?queryString,其中schmal是协议http或https等，serverName是你访问的host,8081是url配置里port的端口，queryString
+						是你访问的url里的？后面的参数。
+	                        注：anon，authcBasic，auchc，user是认证过滤器，
+					perms，roles，ssl，rest，port是授权过滤器 -->
+	            
+	        </value>
+	    </property>
+	</bean> 
+	
+	
+	
+	
+	
+</beans>

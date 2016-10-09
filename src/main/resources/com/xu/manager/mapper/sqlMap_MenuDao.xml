@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xu.manager.dao.MenuDao">
+	<resultMap type="com.xu.manager.bean.MenuBean" id="MenuBeanMap">
+		<id property="id" column="id"></id>
+		<result property="pid" column="pid" />
+		<result property="MenuName" column="name" />
+		<result property="permission" column="permission" />
+		<result property="lev" column="lev" />
+		<result property="url" column="url"></result>
+		<result property="permission" column="permission" />
+	</resultMap>
+
+
+
+	<!-- 根据名字查出登录者权限信息 -->
+	<select id="getMenuByName" parameterType="String" resultMap="MenuBeanMap">
+			 SELECT distinct p.id, p.pid, p.name, p.permission,p.lev, p.value url, p.position FROM t_permission p 
+						 LEFT JOIN t_role_permission rp ON rp.t_permission_id = p.id 
+						 LEFT JOIN t_user_role ur ON ur.t_role_id = rp.t_role_id 
+						LEFT JOIN t_user u ON u.id = ur.t_user_id 
+						WHERE p.lev != 0 and  login_name = #{username}
+						 order by p.lev asc, p.position asc  
+	</select>
+
+</mapper> 

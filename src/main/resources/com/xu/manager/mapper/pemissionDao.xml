@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xu.manager.dao.PemissionDao">
+	<resultMap type="com.xu.manager.bean.Tpermission" id="TprmissionMap">
+		<id property="id" column="id"></id>
+		<result property="pid" column="pid" />
+		<result property="name" column="name" />
+		<result property="permission" column="permission" />
+		<result property="value" column="value"></result>
+		<result property="position" column="position" />
+		<result property="lev" column="lev" />
+	</resultMap>
+
+	<!-- 根据名字查出登录者基础信息 -->
+	<select id="selectPemission"  resultMap="TprmissionMap">
+
+		SELECT * from t_permission
+	</select>
+
+
+
+</mapper> 

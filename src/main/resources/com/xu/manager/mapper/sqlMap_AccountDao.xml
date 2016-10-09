@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xu.manager.dao.AccountDao">
+	<resultMap type="com.xu.manager.bean.LoginUser" id="LoginUserMap">
+		<id property="id" column="id"></id>
+		<result property="loginName" column="login_name" />
+		<result property="name" column="name" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email"></result>
+		<result property="password" column="password" />
+		<result property="sex" column="sex" />
+		<result property="roleId" column="role_id" />
+				<result property="salt" column="salt" />
+	</resultMap>
+	
+ 
+	
+
+	
+		<!-- 保存用户的信息信息 -->
+	<insert id="insertLoginUser" >
+			insert into t_user (login_name,name,phone,email,password,sex,salt,make_time) 
+			value (
+			#{loginName},
+			#{name},
+			#{phone},
+			#{email},
+			#{password},
+		 	#{sex},
+			#{salt},
+			#{makeTime}
+			    )
+	</insert>
+	
+			<!-- 保存用户的初始化为普通用户角色信息 -->
+	<insert id="insertLoginUserRole" parameterType="com.xu.manager.bean.LoginUser" >
+			insert into t_user_role (t_user_id,t_role_id,make_time) 
+			value (
+			#{userId},
+			1,
+			#{makeTime}
+			
+			    )
+	</insert>
+</mapper>
