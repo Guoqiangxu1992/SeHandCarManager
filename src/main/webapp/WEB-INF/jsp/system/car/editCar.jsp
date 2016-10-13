@@ -69,7 +69,7 @@ function search(){
 		};
 	COMMON_PAGINATION.initParam(param);//@
 	var aj = $.ajax( {    
-	    url:'${xgq}/user/loginUserList.do',// 跳转到 action    
+	    url:'${xgq}/car/getCarInformation.do',// 跳转到 action    
 	    type:'POST',    
 	    dataType:'json',  
 	    data:param,  
@@ -128,13 +128,16 @@ function search(){
 					<form id="myForm" role="form" class="form-inline" method="post">
 						<input type="hidden" name="" value="" />
 						<div class="form-group">
-							<label for="title">登录名</label> <input type="text"
-								placeholder="loginName" name="loginName" id="loginName"
+							<label for="title">汽车种类</label> <input type="text"
+								placeholder="汽车种类" name="loginName" id="loginName"
 								class="form-control">
 						</div>
 						<div class="form-group">
-							<label for="approvestatus">用户角色</label> 
-							<select placeholder="用户角色" name="roleId" id="roleId"class="form-control">
+							<label for="approvestatus">变速箱</label> 
+							<select  name="roleId" id="roleId"class="form-control">
+									<option value="0">全部</option>
+                                        <option value="1">手动</option>
+                                        <option value="2">自动</option>
 							</select>
 						</div>
 
@@ -162,13 +165,18 @@ function search(){
 					<thead>
 						<tr>
 
-							<th><i class="icon-bookmark"></i>用户ID</th>
-							<th><i class="icon-bookmark"></i>登录名</th>
-							<th><i class="icon-bookmark"></i>真实姓名</th>
-							<th><i class="icon-bookmark"></i>电话</th>
-							<th><i class="icon-bookmark"></i>邮箱</th>
-							<th><i class="icon-bookmark"></i>用户角色</th>
-							<th><i class="icon-bookmark"></i>注册时间</th>
+							<th><i class="icon-bookmark"></i>汽车编号</th>
+							<th><i class="icon-bookmark"></i>汽车种类</th>
+							<th><i class="icon-bookmark"></i>汽车类型</th>
+							<th><i class="icon-bookmark"></i>行驶里程</th>
+							<th><i class="icon-bookmark"></i>变速箱</th>
+							<th><i class="icon-bookmark"></i>排量</th>
+							<th><i class="icon-bookmark"></i>颜色</th>
+							<th><i class="icon-bookmark"></i>国别</th>
+							<th><i class="icon-bookmark"></i>汽车价格</th>
+							<th><i class="icon-bookmark"></i>汽车拥有者</th>
+							<th><i class="icon-bookmark"></i>车龄</th>
+							<th><i class="icon-bookmark"></i>上牌时间</th>
 							<th><i class="icon-edit"></i> 操作</th>
 
 						</tr>

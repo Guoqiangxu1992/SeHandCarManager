@@ -75,7 +75,8 @@ public class AccountServiceImpl  implements AccountService{
 			try{
 				 result = accountDao.insertLoginUser(loginUser);
 				 if(result==1){
-					 Integer userId = loginUserDao.findUserByUsername(loginUser.getLoginName()).getId();
+					 String userId = loginUser.getUserId();
+					 System.out.println(userId);
 					 loginUser.setUserId(String.valueOf(userId));
 					  result  = accountDao.insertLoginUserRole(loginUser);
 				 }

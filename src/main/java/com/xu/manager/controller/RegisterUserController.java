@@ -40,7 +40,7 @@ import net.sf.json.JSONObject;
 @Controller
 @Scope("prototype")
 @RequestMapping("/user")
-public class RegisterUserController extends BaseController{
+public class RegisterUserController extends BaseController {
 	@Autowired
 	private AccountService accountService;
 	@Autowired
@@ -82,6 +82,7 @@ public class RegisterUserController extends BaseController{
 		List<LoginUserDto> LoginUserDtoList = null;
 		if(loginUserDto!=null){
 			try{
+				//this.test11();
 				loginUserDto.setLimit(loginUserDto.getPgLimit());
 				loginUserDto.setPgNumber(loginUserDto.getPgCurrentPage());;
 				Pagination descOutsourcerpg= loginUserService.queryList(loginUserDto);
@@ -104,4 +105,29 @@ public class RegisterUserController extends BaseController{
 		
 	}
      
+	
+	//写入测试数据
+	
+	public void test11() {
+		String loginName[] = {"xuguo1ww","xu2www","zhwwwangshan","wanwwgba","liswwwhi","wwwwuli","shuwwwju","xwwwisi"};
+		String saleName[] = {"廖大思","武安三","齐德红","葛浩","林德建","罗静","程红","廖大海","徐佳","胡建","大头","丽丽","阿拉斯","丹丽","红石","强哥","qidehong","dahengk"};
+		String phone[] = {"22323232311","18904059699","17934998595","374985990380","189388938839","27387493939","1232552","34363463"};
+		String email[] = {"27898@qq.com","489589@qq.com","xuguo@126.com","34354@","weewre","2ewfwefw","23rewfef","wefef"};
+		try{
+			for(Long i = (long)0;i<1000000;i++){
+				LoginUser loginUser = new LoginUser();
+				
+				int Num =(int)(Math.random()*7);
+				loginUser.setLoginName(loginName[Num]);
+				loginUser.setName(saleName[Num]);
+				loginUser.setEmail(email[Num]);
+				loginUser.setPhone(phone[Num]);
+				
+				accountService.saveUser(loginUser);
+			}
+		}catch(Exception e){
+			e.getStackTrace();
+		}
+	}
+
 }

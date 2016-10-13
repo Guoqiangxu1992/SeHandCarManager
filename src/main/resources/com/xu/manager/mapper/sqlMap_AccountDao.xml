@@ -18,7 +18,7 @@
 
 	
 		<!-- 保存用户的信息信息 -->
-	<insert id="insertLoginUser" >
+	<insert id="insertLoginUser"  useGeneratedKeys="true" keyProperty="userId" parameterType="com.xu.manager.bean.LoginUser">
 			insert into t_user (login_name,name,phone,email,password,sex,salt,make_time) 
 			value (
 			#{loginName},

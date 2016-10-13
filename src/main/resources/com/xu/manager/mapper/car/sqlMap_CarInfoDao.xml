@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xu.manager.dao.LoginUserDao">
+	<resultMap type="com.xu.manager.bean.LoginUser" id="LoginUserMap">
+		<id property="id" column="id"></id>
+		<result property="carId" column="car_id" />
+		<result property="carName" column="car_name" />
+		<result property="carType" column="car_type" />
+		<result property="carTypeId" column="car_type_id" />
+		<result property="carNameId" column="car_name_id"></result>
+		<result property="travelAge" column="travel_age" />
+		<result property="variableBox" column="variable_box" />
+		<result property="displaceMent" column="displaceMent" />
+		<result property="color" column="color" />
+		<result property="country" column="country" />
+		<result property="carDate" column="car_date" />
+		<result property="carAge" column="car_age" />
+		<result property="status" column="status" />
+		<result property="ownerId" column="owner_id" />
+		
+	</resultMap>
+
+
+	<!-- 根据名字查出登录者权限信息 -->
+	<select id="findPermissionByName" parameterType="String" resultType="String">
+			SELECT p.permission
+			FROM
+				t_user u,
+				t_user_role ur,
+				t_role r,
+				t_role_permission rp,
+				t_permission p
+			WHERE
+				u.id = ur.t_user_id
+			AND ur.t_role_id = r.id
+			AND r.id = rp.t_role_id
+			AND rp.t_permission_id = p.id WHERE login_name = #{username}
+	</select>
+	
+	
+	<!-- 根据名字查出登录者权限信息 -->
+	<select id="queryList" parameterType="com.xu.manager.Dto.LoginUserDto" resultMap="LoginUserMap">
+	SELECT
+	u.id,u.login_name,u.name,u.phone,u.email,u.make_time,ur.t_role_id role_id
+   FROM
+	t_user u,
+	t_user_role ur,
+	t_role r
+	where 
+	  u.id = ur.t_user_id
+    AND ur.t_role_id = r.id 
+    <include refid="searchCondition"></include>
+      limit #{loginUserDto.start},#{loginUserDto.end}
+	</select>
+  	<!-- 根据名字查出登录者权限信息 -->
+	<select id="countQueryList" parameterType="com.xu.manager.Dto.LoginUserDto" resultType="int">
+	SELECT
+	count(*)
+   FROM
+	t_user u,
+	t_user_role ur,
+	t_role r
+	where 
+	  u.id = ur.t_user_id
+    AND ur.t_role_id = r.id 
+    <include refid="searchCondition"></include>
+	</select>
+  
+  
+  <!-- 查询条件 -->
+	<sql id="searchCondition">
+			 <if test="loginUserDto.loginName != null and loginUserDto.loginName!=''">
+				and u.login_name like "%"#{loginUserDto.loginName}"%"
+			</if>
+		 	<if test="loginUserDto.roleId != null and loginUserDto.roleId!=''">
+				and u.role_id == #{loginUserDto.roleId}#
+			</if>
+			<if test="loginUserDto.startTime != null and loginUserDto.startTime!=''">
+			 <![CDATA[ 
+				and u.make_time>=#{loginUserDto.startTime}
+				]]>
+			</if> 
+				<if test="loginUserDto.endTime != null and loginUserDto.endTime !=''">
+			 <![CDATA[ 
+				and u.make_time<=#{loginUserDto.endTime}
+				]]>
+			</if> 
+			
+	</sql>
+</mapper> 
